@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minLength(string s) {
+        stack<char> st;
+
+        int ind = 0;
+        int n = s.size();
+
+        while (ind < n) {
+            if (st.empty() || (st.top() != 'A' && st.top() != 'C')) {
+                st.push(s[ind]);
+            } else {
+                if ((s[ind] == 'B' && st.top() == 'A') || (s[ind] == 'D' && st.top() == 'C')) {
+                    st.pop();
+                } else {
+                    st.push(s[ind]);
+                }
+            }
+            ind++;
+        }
+        return st.size();
+    }
+};
