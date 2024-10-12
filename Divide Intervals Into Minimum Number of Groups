@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minGroups(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        int ans = 0;
+
+        multiset<pair<int, int>> st; 
+        for (auto it : intervals) {
+            st.insert({it[0], it[1]});
+        }
+
+        while (!st.empty()) {
+            auto it = *st.begin();
+            st.erase(st.begin());
+            int cur = it.second;
+            while (true) {
+                auto mx = st.upper_bound({cur, INT_MAX});
+                if (mx == st.end()) {
+                    break;
+                }
+                cur = mx -> second;
+                st.erase(mx);
+            }
+            ans++;
+        }
+        return ans;
+    }
+};
