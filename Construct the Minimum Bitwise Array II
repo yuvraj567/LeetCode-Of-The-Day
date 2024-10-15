@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> minBitwiseArray(vector<int>& nums) {
+        vector<int> ans;
+        for (auto& num : nums) {
+            if (num & 1) {
+                int lastIndexOfContinuous1 = -1;
+                for (int i = 0; i < 31; i++) {
+                    if ((num >> i) & 1) {
+                        lastIndexOfContinuous1 = i;
+                    } else {
+                        break;
+                    }
+                }
+                ans.push_back(num ^ (1 << lastIndexOfContinuous1));
+            } else {
+                ans.push_back(-1);
+            }
+        }
+        return ans;
+    }
+};
