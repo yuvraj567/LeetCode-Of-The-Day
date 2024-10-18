@@ -1,3 +1,4 @@
+//Brute force approach
 class Solution {
 public:
     void recursion(int ind, vector<int>& nums, int& global_max, int local_max, int& global_max_counter) {
@@ -26,5 +27,38 @@ public:
 
         recursion(0, nums, global_max, local_max, global_max_counter);
         return global_max_counter;
+    }
+};
+
+//optimized approach
+class Solution {
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        int maxOrValue = 0;
+        for (int num : nums) {
+            maxOrValue |= num;
+        }
+
+        int totalSubsets = 1 << nums.size();  // 2^n subsets
+        int subsetsWithMaxOr = 0;
+
+        // Iterate through all possible subsets
+        for (int subsetMask = 0; subsetMask < totalSubsets; subsetMask++) {
+            int currentOrValue = 0;
+
+            // Calculate OR value for the current subset
+            for (int i = 0; i < nums.size(); i++) {
+                if (((subsetMask >> i) & 1) == 1) {
+                    currentOrValue |= nums[i];
+                }
+            }
+
+            // If current subset's OR equals maxOrValue, increment count
+            if (currentOrValue == maxOrValue) {
+                subsetsWithMaxOr++;
+            }
+        }
+
+        return subsetsWithMaxOr;
     }
 };
