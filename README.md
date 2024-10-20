@@ -1,5 +1,11 @@
 # Daily LeetCode Solutions
 
-Happy coding! Let's tackle those algorithms together!
+Welcome to my LeetCode Problem of the Day repository! Here, you'll find my solutions to the daily coding challenges posed by LeetCode.
 
-Welcome to my repository where I solve the LeetCode problem of the day! Each solution is designed to help improve problem-solving skills and enhance understanding of data structures and algorithms. This journey not only helps me refine my coding abilities but also prepares me for technical interviews and real-world coding challenges.
+## About
+
+This repository is dedicated to solving the LeetCode "Problem of the Day." Each day, a new challenge is tackled, and solutions are documented here. The purpose of this repository is to practice coding skills, explore different problem-solving techniques, and maintain a consistent habit of coding daily.
+
+## LeetCode Username
+
+You can find my LeetCode profile at [Eternal_Blue](https://leetcode.com/Eternal_Blue).
