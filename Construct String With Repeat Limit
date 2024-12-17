@@ -1,0 +1,41 @@
+class Solution {
+public:
+    string repeatLimitedString(string s, int repeatLimit) {
+        map<char, int> freq;
+        for (char it : s) {
+            freq[it]++;
+        }
+
+        priority_queue<pair<char, int>> pq;
+        for (auto& [ch, count] : freq) {
+            pq.push({ch, count});
+        }
+
+        string res = "";
+        while (!pq.empty()) {
+            auto [ch, count] = pq.top();
+            pq.pop();
+
+            int addCount = min(count, repeatLimit);
+            res.append(addCount, ch);
+            count -= addCount;
+
+            if (count > 0) {
+                if (pq.empty()) {
+                    break;
+                }
+
+                auto [nextCh, nextCount] = pq.top();
+                pq.pop();
+
+                res.push_back(nextCh);
+                nextCount--;
+
+                if (count > 0) pq.push({ch, count});
+                if (nextCount > 0) pq.push({nextCh, nextCount});
+            }
+        }
+
+        return res;
+    }
+};
