@@ -1,0 +1,79 @@
+There exist two undirected trees with n and m nodes, labeled from [0, n - 1] and [0, m - 1], respectively.
+
+You are given two 2D integer arrays edges1 and edges2 of lengths n - 1 and m - 1, respectively, where edges1[i] = [ai, bi] indicates that there is an edge between nodes ai and bi in the first tree and edges2[i] = [ui, vi] indicates that there is an edge between nodes ui and vi in the second tree.
+
+Node u is target to node v if the number of edges on the path from u to v is even. Note that a node is always target to itself.
+
+Return an array of n integers answer, where answer[i] is the maximum possible number of nodes that are target to node i of the first tree if you had to connect one node from the first tree to another node in the second tree.
+
+Note that queries are independent from each other. That is, for every query you will remove the added edge before proceeding to the next query.
+
+class Solution {
+public:
+    int getNodesAtDistance(int curr, int k,
+                           unordered_map<int, vector<int>>& tree,
+                           vector<int>& dist) {
+        int cnt = 0;
+        queue<int> q;
+        unordered_map<int, bool> visited;
+        visited[curr] = true;
+        q.push(curr);
+        dist[curr] = 0;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            for (auto it : tree[node]) {
+                if (!visited[it]) {
+                    visited[it] = true;
+                    dist[it] = dist[node] + 1;
+                    q.push(it);
+                    if (dist[it] % 2 == k) {
+                        cnt++;
+                    }
+                }
+            }
+        }
+        return cnt;
+    }
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1,
+                               vector<vector<int>>& edges2) {
+        unordered_map<int, vector<int>> tree1, tree2;
+        int n1 = INT_MIN, n2 = INT_MIN;
+        for (auto& edge : edges1) {
+            tree1[edge[0]].push_back(edge[1]);
+            tree1[edge[1]].push_back(edge[0]);
+            n1 = max(n1, max(edge[0], edge[1]));
+        }
+        for (auto& edge : edges2) {
+            tree2[edge[0]].push_back(edge[1]);
+            tree2[edge[1]].push_back(edge[0]);
+            n2 = max(n2, max(edge[0], edge[1]));
+        }
+        vector<int> ans(n1 + 1, 0);
+        vector<int> distInTree1(n1 + 1, -1), distInTree2(n2 + 1, -1);
+        int oddInTree2 = getNodesAtDistance(0, 1, tree2, distInTree2);
+        int maxInTree2 = 0;
+        for (int i = 0; i <= n2; i++) {
+            int currDist = distInTree2[i];
+            int canVisit = 0;
+            if (currDist % 2 == 0) {
+                canVisit = oddInTree2;
+            } else {
+                canVisit = n2 + 1 - oddInTree2;
+            }
+            maxInTree2 = max(maxInTree2, canVisit);
+        }
+        int evenInTree1 = 1 + getNodesAtDistance(0, 0, tree1, distInTree1);
+        for (int i = 0; i <= n1; i++) {
+            int currDist = distInTree1[i];
+            int canVisit = 0;
+            if (currDist % 2 == 0) {
+                canVisit = evenInTree1;
+            } else {
+                canVisit = n1 + 1 - evenInTree1;
+            }
+            ans[i] = canVisit + maxInTree2;
+        }
+        return ans;
+    }
+};
